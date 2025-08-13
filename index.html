@@ -28,10 +28,25 @@
             --primary-navy: #1e3a5f;
             --primary-white: #ffffff;
             --accent-gold: #d4af37;
+            --accent-orange: #ff6b35;
             --text-gray: #666666;
             --bg-cream: #f8f9fa;
             --bg-light-gray: #f5f5f5;
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+            --border-radius-lg: 20px;
+            --border-radius-xl: 30px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --transition-fast: all 0.2s ease;
             --shadow-soft: 0 20px 40px rgba(0,0,0,0.1);
+            --shadow-medium: 0 8px 25px rgba(0,0,0,0.15);
+            --shadow-large: 0 15px 35px rgba(0,0,0,0.2);
+            --gradient-primary: linear-gradient(135deg, var(--primary-navy), #2c5282);
+            --gradient-accent: linear-gradient(135deg, var(--accent-orange), #f7931e);
             --transition-smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
@@ -146,9 +161,130 @@
             margin: 0.25rem 0;
         }
 
-        .business-hours {
-            color: var(--text-gray);
+        .business-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-saturday {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: glow-pulse 2s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { 
+                box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            }
+            50% { 
+                box-shadow: 0 4px 16px rgba(40, 167, 69, 0.6);
+            }
+        }
+
+        .hours-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        .hours-detail .saturday {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .hours-detail .holiday {
+            color: #999;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .line-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: #00c300;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            box-shadow: 0 2px 8px rgba(0, 195, 0, 0.3);
+        }
+
+        .line-button:hover {
+            background: #00a300;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 195, 0, 0.4);
+        }
+
+        .line-icon {
+            font-size: 1.1rem;
+        }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .float-phone,
+        .float-line {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.2rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            min-width: 60px;
+            justify-content: center;
+        }
+
+        .float-phone {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            animation: pulse-float 3s infinite;
+        }
+
+        .float-line {
+            background: linear-gradient(135deg, #00c300, #00a300);
+            animation: bounce-float 4s infinite 1s;
+        }
+
+        @keyframes bounce-float {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-5px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(-3px); }
+        }
+
+        .float-phone:hover,
+        .float-line:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .mobile-only {
+            display: none;
         }
 
         .header-phone:hover {
@@ -322,6 +458,83 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            transition: background 0.8s ease;
+        }
+
+        .hero-slide-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            color: var(--primary-navy);
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-nav:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .hero-prev {
+            left: -25px;
+        }
+
+        .hero-next {
+            right: -25px;
+        }
+
+        .hero-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hero-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .hero-indicator.active {
+            background: var(--primary-white);
+            transform: scale(1.2);
+        }
+
+        .hero-indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-slide-title {
+            transition: all 0.8s ease;
+        }
+
+        .hero-slide-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            display: block;
+            margin-top: 1rem;
         }
 
         .hero-content {
@@ -422,18 +635,19 @@
 
         .feature-card {
             background: var(--bg-light-gray);
-            padding: 3rem 2rem;
-            border-radius: 16px;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
             text-align: center;
             transition: var(--transition-smooth);
             opacity: 0;
             transform: translateY(50px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-soft);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             box-shadow: var(--shadow-soft);
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
         }
 
         .feature-icon {
@@ -465,7 +679,13 @@
         }
 
         .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.2) rotate(5deg);
+            animation: iconBounce 0.6s ease-in-out;
+        }
+        
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1.2) rotate(5deg); }
+            50% { transform: scale(1.3) rotate(8deg); }
         }
 
         .feature-title {
@@ -520,7 +740,7 @@
         .process-number {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary-navy), #2c5282);
+            background: var(--gradient-primary);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -528,10 +748,10 @@
             justify-content: center;
             font-size: 1.5rem;
             font-weight: bold;
-            margin: 0 auto 1rem;
+            margin: 0 auto var(--spacing-sm);
             position: relative;
             z-index: 2;
-            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
+            box-shadow: var(--shadow-medium);
         }
         
         .process-title {
@@ -549,13 +769,110 @@
         }
         
         .process-duration {
+            background: var(--gradient-accent);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-lg);
             font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-            background: rgba(212, 175, 55, 0.1);
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
+            font-weight: 500;
             display: inline-block;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .process-toggle-btn {
+            background: transparent;
+            border: 2px solid var(--primary-navy);
+            color: var(--primary-navy);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-xl);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: var(--spacing-sm);
+            transition: var(--transition-fast);
+            width: 100%;
+        }
+        
+        .process-toggle-btn:hover {
+            background: var(--primary-navy);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(30, 58, 95, 0.2);
+        }
+        
+        .process-details {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-navy);
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .detail-item {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-item h4 {
+            color: var(--primary-navy);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-item h4:before {
+            content: '●';
+            color: #ff6b35;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .detail-item p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-left: 1rem;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .testimonials-actions {
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+        
+        .show-more-btn {
+            background: linear-gradient(135deg, var(--primary-navy), #2c5282);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.2);
+        }
+        
+        .show-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.3);
+            background: linear-gradient(135deg, #2c5282, var(--primary-navy));
         }
         
         @media (max-width: 768px) {
@@ -605,8 +922,22 @@
         }
         
         .testimonial-card:hover {
-            transform: rotate(0deg) translateY(-10px);
+            transform: rotate(0deg) translateY(-10px) scale(1.02);
             box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .testimonial-card:hover .testimonial-avatar {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(30, 58, 95, 0.3);
+        }
+        
+        .testimonial-card:hover .star {
+            animation: starShine 0.8s ease-in-out;
+        }
+        
+        @keyframes starShine {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
         
         .testimonial-card::before {
@@ -726,8 +1057,13 @@
         }
 
         .news-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.01);
             box-shadow: var(--shadow-soft);
+        }
+        
+        .news-item:hover .news-title {
+            color: #ff6b35;
+            transform: translateX(5px);
         }
 
         .news-date {
@@ -864,33 +1200,103 @@
 
         /* Footer */
         .footer {
-            background: #1a1a1a;
+            background: linear-gradient(135deg, var(--primary-navy), #2c5282);
             color: var(--primary-white);
-            padding: 3rem 0 2rem;
+            padding: 4rem 0 2rem;
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
         .footer-section h4 {
             color: var(--accent-gold);
             margin-bottom: 1.5rem;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), #ff6b35);
+            border-radius: 2px;
+        }
+        
+        .footer-section h5 {
+            color: #ff6b35;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .footer-section p {
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
         }
 
         .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             transition: var(--transition-smooth);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-icon {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .service-areas {
+            margin-bottom: 1rem;
+        }
+        
+        .area-group {
+            margin-bottom: 1rem;
+        }
+        
+        .area-note {
+            font-style: italic;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+        
+        .footer-cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white !important;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .footer-cta-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3); }
+            100% { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5); }
         }
 
         .footer-section a:hover {
@@ -1024,6 +1430,14 @@
                 min-width: 60px;
                 min-height: 44px;
                 font-size: 2.5rem;
+            }
+
+            .mobile-only {
+                display: inline;
+            }
+
+            .line-contact {
+                display: none;
             }
 
             .btn {
@@ -1240,32 +1654,95 @@
 
         /* Achievements Section */
         .achievements {
-            background: var(--primary-navy);
-            color: var(--primary-white);
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 4rem 0;
         }
 
         .achievements-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
             text-align: center;
         }
 
         .achievement-item {
-            opacity: 0;
-            transform: translateY(50px);
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--accent-color, #ff6b35);
+            position: relative;
+            overflow: hidden;
         }
-
-        .achievement-number {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: bold;
-            color: var(--accent-gold);
+        
+        .achievement-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(30, 58, 95, 0.15);
+        }
+        
+        .achievement-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color, #ff6b35), var(--accent-color, #ff6b35)88);
+            border-radius: 2px;
+        }
+        
+        .achievement-icon {
+            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
+        .achievement-number {
+            font-size: clamp(2.8rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--accent-color, #ff6b35);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.2rem;
+        }
+        
+        .achievement-suffix {
+            font-size: 0.6em;
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+
         .achievement-label {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 0.8rem;
+        }
+        
+        .achievement-details {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+        
+        .count-up {
+            animation: countUp 2s ease-out;
+        }
+        
+        @keyframes countUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         /* Animation Classes */
@@ -1302,6 +1779,47 @@
                 '浴室リフォーム施工事例',
                 '外壁塗装施工事例'
             ];
+
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [isSlideAutoPlay, setIsSlideAutoPlay] = useState(true);
+
+            const heroSlides = [
+                {
+                    image: 'kitchen-after.jpg',
+                    title: 'キッチンリフォーム',
+                    subtitle: '最新システムキッチンで快適な暮らし',
+                    background: 'linear-gradient(135deg, #ff6b35, #f7931e)',
+                    link: '#kitchen-case'
+                },
+                {
+                    image: 'bathroom-after.jpg',
+                    title: '浴室リフォーム',
+                    subtitle: '癒しのバスタイムを実現',
+                    background: 'linear-gradient(135deg, #4fc3f7, #29b6f6)',
+                    link: '#bathroom-case'
+                },
+                {
+                    image: 'exterior-after.jpg',
+                    title: '外壁塗装',
+                    subtitle: '美しい外観で資産価値向上',
+                    background: 'linear-gradient(135deg, #28a745, #20c997)',
+                    link: '#exterior-case'
+                }
+            ];
+
+            const nextSlide = () => {
+                setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+            };
+
+            const prevSlide = () => {
+                setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+            };
+
+            const goToSlide = (index) => {
+                setCurrentSlide(index);
+                setIsSlideAutoPlay(false);
+                setTimeout(() => setIsSlideAutoPlay(true), 10000);
+            };
 
             const openLightbox = (index) => {
                 setCurrentImage(index);
@@ -1427,15 +1945,30 @@
                 window.addEventListener('scroll', handleScroll);
                 initAnimations();
 
+                // Auto slide for hero section
+                const slideInterval = setInterval(() => {
+                    if (isSlideAutoPlay) {
+                        nextSlide();
+                    }
+                }, 5000);
+
                 return () => {
                     window.removeEventListener('scroll', handleScroll);
+                    clearInterval(slideInterval);
                 };
-            }, []);
+            }, [isSlideAutoPlay]);
 
             return (
                 <>
                     <Header scrolled={scrolled} />
-                    <HeroSection openLightbox={openLightbox} />
+                    <HeroSection 
+                        openLightbox={openLightbox} 
+                        currentSlide={currentSlide}
+                        heroSlides={heroSlides}
+                        nextSlide={nextSlide}
+                        prevSlide={prevSlide}
+                        goToSlide={goToSlide}
+                    />
                     <FeaturesSection />
                     <NewsSection />
                     <RecentWorksSection openLightbox={openLightbox} />
@@ -1445,7 +1978,7 @@
                     <AchievementsSection />
                     <CTASection />
                     <Footer />
-                    <FloatingCTA />
+                    <FloatingButtons />
                     <MobilePhoneCTA />
                     <Lightbox 
                         isOpen={lightboxOpen} 
@@ -1483,28 +2016,45 @@
                                     <span className="phone-icon">📞</span>
                                     <span>045-123-4567</span>
                                 </a>
-                                <div className="business-hours small-text">営業時間 9:00-18:00（日祝除く）</div>
+                                <div className="business-info">
+                                    <span className="badge-saturday">土曜も営業中！</span>
+                                    <div className="hours-detail">
+                                        <span>平日 9:00-18:00</span>
+                                        <span className="saturday">土曜 9:00-17:00</span>
+                                        <span className="holiday">日祝休み</span>
+                                    </div>
+                                </div>
                             </div>
                             
-                            <a href="contact.html" className="cta-button pulse">
-                                無料相談はこちら
-                            </a>
+                            <div className="header-actions">
+                                <div className="line-contact">
+                                    <a href="https://lin.ee/xxxxx" className="line-button">
+                                        <span className="line-icon">💬</span>
+                                        <span>LINEで相談</span>
+                                    </a>
+                                </div>
+                                <a href="contact.html" className="cta-button pulse">
+                                    無料相談はこちら
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </header>
             );
         }
 
-        function HeroSection({ openLightbox }) {
+        function HeroSection({ openLightbox, currentSlide, heroSlides, nextSlide, prevSlide, goToSlide }) {
+            const currentSlideData = heroSlides[currentSlide];
+            
             return (
-                <section className="hero">
+                <section className="hero" style={{background: currentSlideData.background}}>
                     <div className="container">
                         <div className="hero-content">
                             <div className="hero-text">
                                 <div className="hero-subtitle">信頼と実績のリフォーム専門店</div>
-                                <h1 className="hero-title">
-                                    住みながら安心<br />
-                                    理想の住まいづくり
+                                <h1 className="hero-title hero-slide-title">
+                                    {currentSlideData.title}<br />
+                                    <span className="hero-slide-subtitle">{currentSlideData.subtitle}</span>
                                 </h1>
                                 <p className="hero-description body-text">
                                     15年の実績と確かな技術で、お客様の暮らしを大切にしながら
@@ -1517,9 +2067,22 @@
                                 </div>
                             </div>
                             <div className="hero-visual">
-                                <div className="hero-image" onClick={() => openLightbox(0)}>
-                                    メインビジュアル<br />施工事例写真<br />
-                                    <small>クリックで拡大</small>
+                                <div className="hero-slide-container">
+                                    <button className="hero-nav hero-prev" onClick={prevSlide}>‹</button>
+                                    <div className="hero-image" onClick={() => openLightbox(0)}>
+                                        {currentSlideData.image}<br />
+                                        <small>クリックで拡大</small>
+                                    </div>
+                                    <button className="hero-nav hero-next" onClick={nextSlide}>›</button>
+                                </div>
+                                <div className="hero-indicators">
+                                    {heroSlides.map((_, index) => (
+                                        <button
+                                            key={index}
+                                            className={`hero-indicator ${index === currentSlide ? 'active' : ''}`}
+                                            onClick={() => goToSlide(index)}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -1696,7 +2259,9 @@
         }
 
         function TestimonialsSection() {
-            const testimonials = [
+            const [showAll, setShowAll] = useState(false);
+            
+            const allTestimonials = [
                 {
                     rating: 5,
                     content: '15年住んだキッチンを新しくしていただきました。住みながらの工事で心配でしたが、職人さんがとても丁寧で、毎日きれいに掃除してくださり、安心して過ごせました。仕上がりも想像以上で、毎日の料理が楽しくなりました。',
@@ -1723,8 +2288,37 @@
                     service: '外壁・屋根塗装',
                     period: '工期: 10日間',
                     completionDate: '2024年8月施工'
+                },
+                {
+                    rating: 5,
+                    content: '戸建ての全面リフォームをお願いしました。間取り変更も含む大規模工事でしたが、細かな要望まで聞いてくださり、家族みんなが満足する住まいになりました。工事期間中の仮住まいについても親身に相談にのっていただきました。',
+                    author: 'K様（50代夫婦）',
+                    location: '横浜市青葉区',
+                    service: '戸建て全面リフォーム',
+                    period: '工期: 45日間',
+                    completionDate: '2024年7月施工'
+                },
+                {
+                    rating: 5,
+                    content: '築40年のマンションのトイレと洗面台を交換していただきました。狭いスペースでしたが、収納も増やしてくださり、使い勝手が格段に向上しました。コストパフォーマンスが素晴らしく、知人にも紹介させていただいています。',
+                    author: 'M様（70代女性）',
+                    location: '横浜市中区',
+                    service: 'トイレ・洗面台交換',
+                    period: '工期: 2日間',
+                    completionDate: '2024年6月施工'
+                },
+                {
+                    rating: 5,
+                    content: '雨漏りが心配で屋根の修理を依頼しました。状況を詳しく説明してくださり、必要な部分のみの工事で済み、費用を抑えることができました。梅雨の時期も安心して過ごせるようになり、本当に感謝しています。',
+                    author: 'H様（60代男性）',
+                    location: '横浜市保土ケ谷区',
+                    service: '屋根部分補修',
+                    period: '工期: 3日間',
+                    completionDate: '2024年5月施工'
                 }
             ];
+            
+            const visibleTestimonials = showAll ? allTestimonials : allTestimonials.slice(0, 3);
 
             return (
                 <section className="testimonials section">
@@ -1735,7 +2329,7 @@
                             たくさんの嬉しいお声をいただいています。
                         </p>
                         <div className="testimonials-grid">
-                            {testimonials.map((testimonial, index) => (
+                            {visibleTestimonials.map((testimonial, index) => (
                                 <div key={index} className="testimonial-card">
                                     <div className="testimonial-rating">
                                         {[...Array(testimonial.rating)].map((_, i) => (
@@ -1760,56 +2354,105 @@
                                 </div>
                             ))}
                         </div>
+                        <div className="testimonials-actions">
+                            <button 
+                                className="show-more-btn"
+                                onClick={() => setShowAll(!showAll)}
+                            >
+                                {showAll ? 'お客様の声を少なく表示 ▲' : 'もっと見る ▼'}
+                            </button>
+                        </div>
                     </div>
                 </section>
             );
         }
 
         function ProcessFlowSection() {
+            const [activeStep, setActiveStep] = useState(null);
+            
             const steps = [
                 {
                     number: '1',
                     title: 'お問い合わせ',
                     description: 'お電話・メールでお気軽に',
-                    duration: '当日対応'
+                    duration: '当日対応',
+                    details: {
+                        process: 'お客様からのお電話またはお問い合わせフォームからご連絡をいただきます。',
+                        requirements: '・リフォームしたい場所・予算の目安・希望時期をお聞かせください',
+                        notes: '営業時間外でもメールでのお問い合わせは24時間受付中です'
+                    }
                 },
                 {
                     number: '2',
                     title: '現地調査',
                     description: '無料で詳しく調査します',
-                    duration: '1-2日後'
+                    duration: '1-2日後',
+                    details: {
+                        process: '経験豊富なスタッフがお伺いし、現場の状況を詳しく調査いたします。',
+                        requirements: '・立ち会いをお願いします・現在のお困りごとをお聞かせください',
+                        notes: '調査費用は一切いただきません。所要時間は約30分〜1時間です'
+                    }
                 },
                 {
                     number: '3',
                     title: 'お見積もり',
                     description: '明確な料金をご提示',
-                    duration: '3日以内'
+                    duration: '3日以内',
+                    details: {
+                        process: '現地調査の結果をもとに、詳細なお見積書を作成いたします。',
+                        requirements: '・工事内容の詳細確認・ご予算との調整',
+                        notes: '不明な点はお気軽にご質問ください。見積もり後の検討期間も十分にお取りします'
+                    }
                 },
                 {
                     number: '4',
                     title: 'ご契約',
                     description: 'ご納得いただいてから',
-                    duration: ''
+                    duration: '',
+                    details: {
+                        process: 'お見積もりにご納得いただけましたら、正式にご契約となります。',
+                        requirements: '・契約書の内容確認・工事日程の調整',
+                        notes: 'しつこい営業は一切いたしません。十分ご検討ください'
+                    }
                 },
                 {
                     number: '5',
                     title: '着工',
                     description: '丁寧に施工します',
-                    duration: ''
+                    duration: '',
+                    details: {
+                        process: '近隣への挨拶を済ませ、安全に配慮して工事を開始いたします。',
+                        requirements: '・工事中の注意点説明・生活への影響を最小限に',
+                        notes: '住みながらの工事も可能です。進捗状況は随時ご報告いたします'
+                    }
                 },
                 {
                     number: '6',
                     title: '完成・お引き渡し',
                     description: '確認後お引き渡し',
-                    duration: ''
+                    duration: '',
+                    details: {
+                        process: '工事完了後、お客様と一緒に仕上がりを確認していただきます。',
+                        requirements: '・完成検査・取扱説明・保証書のお渡し',
+                        notes: '気になる点があれば遠慮なくお申し付けください'
+                    }
                 },
                 {
                     number: '7',
                     title: 'アフターフォロー',
                     description: '1年間無料保証',
-                    duration: ''
+                    duration: '',
+                    details: {
+                        process: '工事完了後も定期的にメンテナンスのご案内をいたします。',
+                        requirements: '・保証内容の説明・メンテナンス方法の指導',
+                        notes: '不具合があった場合は迅速に対応いたします'
+                    }
                 }
             ];
+            
+            const toggleStepDetails = (index) => {
+                setActiveStep(activeStep === index ? null : index);
+            };
 
             return (
                 <section className="process-flow section">
@@ -1827,6 +2470,28 @@
                                     <p className="process-description">{step.description}</p>
                                     {step.duration && (
                                         <span className="process-duration">{step.duration}</span>
+                                    )}
+                                    <button 
+                                        className="process-toggle-btn"
+                                        onClick={() => toggleStepDetails(index)}
+                                    >
+                                        {activeStep === index ? '詳細を閉じる ▲' : '詳細を見る ▼'}
+                                    </button>
+                                    {activeStep === index && (
+                                        <div className="process-details">
+                                            <div className="detail-item">
+                                                <h4>流れ</h4>
+                                                <p>{step.details.process}</p>
+                                            </div>
+                                            <div className="detail-item">
+                                                <h4>お客様にお願いすること</h4>
+                                                <p>{step.details.requirements}</p>
+                                            </div>
+                                            <div className="detail-item">
+                                                <h4>備考</h4>
+                                                <p>{step.details.notes}</p>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             ))}
@@ -1846,29 +2511,56 @@
                                 <p>横浜市のリフォーム専門店</p>
                                 <p>〒220-0000</p>
                                 <p>神奈川県横浜市西区◯◯町1-2-3</p>
-                                <p>営業時間: 9:00～18:00</p>
-                                <p>定休日: 日曜日</p>
+                                <p>営業時間: 平日9:00～18:00・土曜9:00〜17:00</p>
+                                <p>定休日: 日曜・祝日</p>
                             </div>
                             <div className="footer-section">
-                                <h4>サービス</h4>
-                                <p><a href="services.html">キッチンリフォーム</a></p>
-                                <p><a href="services.html">浴室リフォーム</a></p>
-                                <p><a href="services.html">外壁塗装</a></p>
-                                <p><a href="services.html">屋根工事</a></p>
-                                <p><a href="services.html">全面改修</a></p>
+                                <h4>選ばれる理由</h4>
+                                <p>✅ 15年の実績と信頼</p>
+                                <p>✅ 住みながらリフォーム対応</p>
+                                <p>✅ 地域密着で迅速対応</p>
+                                <p>✅ 明確な料金体系</p>
+                                <p>✅ 充実のアフターフォロー</p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>保証・アフターフォロー</h4>
+                                <p>🛡️ 工事保証: 最長10年</p>
+                                <p>🔧 定期点検: 無料実施</p>
+                                <p>📞 24時間緊急対応</p>
+                                <p>💯 施工不良: 無償修理</p>
+                                <p><a href="contact.html">保証について詳しく</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>対応エリア</h4>
+                                <div className="service-areas">
+                                    <div className="area-group">
+                                        <h5>横浜市</h5>
+                                        <p>西区・中区・南区・港北区<br />
+                                           神奈川区・保土ケ谷区<br />
+                                           青葉区・都筑区・緑区</p>
+                                    </div>
+                                    <div className="area-group">
+                                        <h5>川崎市（一部）</h5>
+                                        <p>幸区・中原区</p>
+                                    </div>
+                                </div>
+                                <p className="area-note">※出張費無料エリア</p>
                             </div>
                             <div className="footer-section">
                                 <h4>お問い合わせ</h4>
-                                <p>📞 045-123-4567</p>
-                                <p>📧 info@yamada-kenchiku.jp</p>
-                                <p><a href="contact.html">お問い合わせフォーム</a></p>
-                            </div>
-                            <div className="footer-section">
-                                <h4>営業エリア</h4>
-                                <p>横浜市内全域</p>
-                                <p>川崎市の一部</p>
-                                <p>※出張費無料エリア</p>
-                                <p><a href="about.html">詳しくはこちら</a></p>
+                                <p className="contact-item">
+                                    <span className="contact-icon">📞</span>
+                                    <a href="tel:045-123-4567">045-123-4567</a>
+                                </p>
+                                <p className="contact-item">
+                                    <span className="contact-icon">📧</span>
+                                    <a href="mailto:info@yamada-kenchiku.jp">info@yamada-kenchiku.jp</a>
+                                </p>
+                                <p className="contact-item">
+                                    <span className="contact-icon">💬</span>
+                                    <a href="https://lin.ee/xxxxx">LINE相談（24時間）</a>
+                                </p>
+                                <p><a href="contact.html" className="footer-cta-btn">お問い合わせフォーム</a></p>
                             </div>
                         </div>
                         <div className="footer-bottom">
@@ -1928,18 +2620,56 @@
         }
 
         function AchievementsSection() {
+            const [isVisible, setIsVisible] = useState(false);
+            
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                        }
+                    },
+                    { threshold: 0.3 }
+                );
+                
+                const element = document.querySelector('.achievements');
+                if (element) observer.observe(element);
+                
+                return () => observer.disconnect();
+            }, []);
+            
             const achievements = [
                 {
-                    number: '1,200件',
-                    label: '累計施工実績'
+                    number: '1,200',
+                    suffix: '件+',
+                    label: '累計施工実績',
+                    details: '開業から15年間で横浜市内を中心に施工',
+                    icon: '🏠',
+                    color: '#ff6b35'
                 },
                 {
-                    number: '98%',
-                    label: 'お客様満足度'
+                    number: '98',
+                    suffix: '%',
+                    label: 'お客様満足度',
+                    details: '施工後アンケート結果（2023年度実績）',
+                    icon: '⭐',
+                    color: '#f7931e'
                 },
                 {
-                    number: '15年',
-                    label: '地域密着営業'
+                    number: '15',
+                    suffix: '年',
+                    label: '地域密着営業',
+                    details: '横浜市内での信頼と実績の積み重ね',
+                    icon: '🤝',
+                    color: '#1e3a5f'
+                },
+                {
+                    number: '24',
+                    suffix: '時間',
+                    label: '緊急対応',
+                    details: '水漏れ・雨漏りなど緊急時は24時間対応',
+                    icon: '🚨',
+                    color: '#e53e3e'
                 }
             ];
 
@@ -1949,9 +2679,14 @@
                         <h2 className="section-title">実績・信頼の数字</h2>
                         <div className="achievements-grid">
                             {achievements.map((achievement, index) => (
-                                <div key={index} className="achievement-item">
-                                    <div className="achievement-number">{achievement.number}</div>
+                                <div key={index} className="achievement-item" style={{ '--accent-color': achievement.color }}>
+                                    <div className="achievement-icon">{achievement.icon}</div>
+                                    <div className="achievement-number">
+                                        <span className={isVisible ? 'count-up' : ''}>{achievement.number}</span>
+                                        <span className="achievement-suffix">{achievement.suffix}</span>
+                                    </div>
                                     <div className="achievement-label">{achievement.label}</div>
+                                    <div className="achievement-details">{achievement.details}</div>
                                 </div>
                             ))}
                         </div>
@@ -1960,12 +2695,16 @@
             );
         }
 
-        function FloatingCTA() {
+        function FloatingButtons() {
             return (
-                <a href="contact.html" className="floating-cta">
-                    <span className="floating-icon">📝</span>
-                    <span>無料見積もりはこちら</span>
-                </a>
+                <div className="floating-buttons">
+                    <a href="tel:045-123-4567" className="float-phone">
+                        📞 <span className="mobile-only">タップで発信→</span>
+                    </a>
+                    <a href="https://lin.ee/xxxxx" className="float-line">
+                        💬 <span>LINE相談</span>
+                    </a>
+                </div>
             );
         }
 
