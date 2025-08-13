@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サービス内容 - 山田建築 | 横浜のリフォーム専門店</title>
+    <meta name="description" content="山田建築のサービス内容をご紹介。キッチン、浴室、外壁塗装、屋根工事、全面改修まで幅広く対応。料金目安や施工の流れもご案内。">
+    <meta name="keywords" content="山田建築, サービス, キッチンリフォーム, 浴室リフォーム, 外壁塗装, 屋根工事, 横浜市">
+    
+    <!-- React and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        /* 共通スタイル */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-navy: #1e3a5f;
+            --primary-white: #ffffff;
+            --accent-gold: #d4af37;
+            --text-gray: #666666;
+            --bg-cream: #faf9f7;
+            --bg-light-gray: #f5f5f5;
+            --shadow-soft: 0 20px 40px rgba(0,0,0,0.1);
+            --transition-smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            line-height: 1.8;
+            color: #333333;
+            background-color: var(--primary-white);
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            color: var(--primary-white);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+            color: var(--primary-navy);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .heading-large {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: var(--primary-navy);
+        }
+
+        .body-text {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+            color: var(--text-gray);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 3rem);
+        }
+
+        .section {
+            padding: clamp(4rem, 8vh, 8rem) 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+            cursor: pointer;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #2c5282 100%);
+            color: var(--primary-white);
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: var(--bg-light-gray);
+            padding: 1rem 0;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .breadcrumb-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-gray);
+        }
+
+        /* Services Grid */
+        .services {
+            background: var(--primary-white);
+        }
+
+        .services-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .service-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .service-item:nth-child(even) .service-content {
+            order: 2;
+        }
+
+        .service-item:nth-child(even) .service-visual {
+            order: 1;
+        }
+
+        .service-visual {
+            height: 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e8e8e8, #f5f5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--text-gray);
+        }
+
+        .service-content {
+            padding: 2rem 0;
+        }
+
+        .service-title {
+            color: var(--primary-navy);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+        }
+
+        .service-description {
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-gray);
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .price-badge {
+            display: inline-block;
+            background: var(--accent-gold);
+            color: var(--primary-white);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .service-cta {
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4);
+            background: #2c5282;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-navy);
+            border: 2px solid var(--primary-navy);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-navy);
+            color: var(--primary-white);
+        }
+
+        /* Process Section */
+        .process {
+            background: var(--bg-cream);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .process-step {
+            background: var(--primary-white);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .process-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            color: var(--primary-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .process-icon {
+            font-size: 3rem;
+            margin: 2rem 0 1.5rem;
+            color: var(--primary-navy);
+        }
+
+        .process-title {
+            color: var(--primary-navy);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .process-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq {
+            background: var(--primary-white);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .faq-question {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 2rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .faq-question::before {
+            content: 'Q';
+            background: var(--accent-gold);
+            color: var(--primary-white);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            padding-left: 3rem;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+            padding-bottom: 2rem;
+        }
+
+        .faq-answer-content {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .faq-answer-content::before {
+            content: 'A';
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            margin-left: -3rem;
+            float: left;
+            margin-top: 0.2rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: var(--primary-navy);
+            color: var(--primary-white);
+        }
+
+        .cta-content {
+            text-align: center;
+        }
+
+        .cta-title {
+            color: var(--primary-white);
+            margin-bottom: 2rem;
+        }
+
+        .cta-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: var(--primary-white);
+            color: var(--primary-navy);
+            box-shadow: none;
+        }
+
+        .btn-white:hover {
+            background: var(--bg-light-gray);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: var(--primary-white);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .service-item {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .service-item:nth-child(even) .service-content {
+                order: 1;
+            }
+
+            .service-item:nth-child(even) .service-visual {
+                order: 2;
+            }
+
+            .process-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .nav {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-visual {
+                height: 250px;
+            }
+
+            .service-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 100);
+                };
+
+                const initAnimations = () => {
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Service items animation
+                    gsap.utils.toArray('.service-item').forEach((item, i) => {
+                        gsap.to(item, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 1,
+                            delay: i * 0.2,
+                            scrollTrigger: {
+                                trigger: item,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
+
+                    // Process steps animation
+                    gsap.utils.toArray('.process-step').forEach((step, i) => {
+                        gsap.to(step, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            delay: i * 0.1,
+                            scrollTrigger: {
+                                trigger: step,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
+
+                    // FAQ items animation
+                    gsap.utils.toArray('.faq-item').forEach((item, i) => {
+                        gsap.to(item, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.6,
+                            delay: i * 0.1,
+                            scrollTrigger: {
+                                trigger: item,
+                                start: 'top 90%',
+                            }
+                        });
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                initAnimations();
+
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                };
+            }, []);
+
+            return (
+                <>
+                    <Header scrolled={scrolled} />
+                    <PageHero />
+                    <Breadcrumb />
+                    <ServicesSection />
+                    <ProcessSection />
+                    <FAQSection />
+                    <CTASection />
+                    <Footer />
+                </>
+            );
+        }
+
+        function Header({ scrolled }) {
+            return (
+                <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+                    <div className="container">
+                        <div className="header-content">
+                            <a href="index.html" className="logo">山田建築</a>
+                            <nav>
+                                <ul className="nav">
+                                    <li><a href="index.html" className="nav-link">トップページ</a></li>
+                                    <li><a href="about.html" className="nav-link">会社概要</a></li>
+                                    <li><a href="services.html" className="nav-link active">サービス内容</a></li>
+                                    <li><a href="portfolio.html" className="nav-link">施工事例</a></li>
+                                    <li><a href="contact.html" className="nav-link">お問い合わせ</a></li>
+                                </ul>
+                                <button className="mobile-menu-btn">☰</button>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        function PageHero() {
+            return (
+                <section className="page-hero">
+                    <div className="container">
+                        <h1 className="page-title">サービス内容</h1>
+                        <p className="page-subtitle">
+                            小さな修繕から大規模改修まで<br />
+                            幅広いリフォームサービスをご提供
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        function Breadcrumb() {
+            return (
+                <section className="breadcrumb">
+                    <div className="container">
+                        <ul className="breadcrumb-list">
+                            <li><a href="index.html" className="breadcrumb-link">トップページ</a></li>
+                            <li className="breadcrumb-separator">></li>
+                            <li>サービス内容</li>
+                        </ul>
+                    </div>
+                </section>
+            );
+        }
+
+        function ServicesSection() {
+            const services = [
+                {
+                    icon: '🍳',
+                    title: 'キッチンリフォーム',
+                    description: '古いキッチンを最新のシステムキッチンに交換。収納力アップや最新設備導入で快適な料理空間を実現します。機能性とデザイン性を兼ね備えた理想のキッチンをご提案します。',
+                    features: [
+                        'システムキッチン交換',
+                        'ガスコンロ・IH交換',
+                        'レンジフード交換',
+                        '床・壁クロス張替え',
+                        '収納棚増設',
+                        '照明器具交換'
+                    ],
+                    price: '80万円～200万円',
+                    image: 'キッチンリフォーム施工例'
+                },
+                {
+                    icon: '🛁',
+                    title: '浴室リフォーム',
+                    description: '在来浴室からユニットバスへの交換、またはユニットバスの最新機種への交換で快適なバスタイムを提供します。保温性向上やお手入れのしやすさも大幅に改善されます。',
+                    features: [
+                        'ユニットバス交換',
+                        '給湯器交換',
+                        '浴室乾燥機設置',
+                        'バリアフリー対応',
+                        '手すり設置',
+                        '脱衣所改修'
+                    ],
+                    price: '100万円～180万円',
+                    image: '浴室リフォーム施工例'
+                },
+                {
+                    icon: '🚽',
+                    title: 'トイレリフォーム',
+                    description: '最新の節水・温水洗浄機能付きトイレへの交換。バリアフリー対応や手すり設置も承ります。快適で清潔なトイレ空間を実現します。',
+                    features: [
+                        '便器・温水洗浄便座交換',
+                        '手洗い器設置',
+                        '床・壁クロス張替え',
+                        '手すり設置',
+                        '照明器具交換',
+                        'タオル掛け設置'
+                    ],
+                    price: '20万円～60万円',
+                    image: 'トイレリフォーム施工例'
+                },
+                {
+                    icon: '🏠',
+                    title: '外壁塗装',
+                    description: '住まいの美観と保護を両立する外壁塗装。防水性・耐久性に優れた塗料で長期間美しさを保ちます。定期的な塗装で住まいの価値を維持します。',
+                    features: [
+                        '外壁塗装（シリコン・フッ素系）',
+                        '付帯部塗装',
+                        'シーリング補修',
+                        '足場設置・撤去',
+                        '高圧洗浄',
+                        '下地処理'
+                    ],
+                    price: '80万円～150万円',
+                    image: '外壁塗装施工例'
+                },
+                {
+                    icon: '🏠',
+                    title: '屋根工事',
+                    description: '屋根材の交換や塗装、雨漏り修理まで屋根に関する工事を幅広く対応いたします。住まいを守る重要な部分だからこそ、確実な施工をお約束します。',
+                    features: [
+                        '屋根塗装',
+                        '屋根材交換（カラーベスト・瓦）',
+                        '雨樋交換・修理',
+                        '雨漏り修理',
+                        '防水工事',
+                        '断熱材設置'
+                    ],
+                    price: '60万円～200万円',
+                    image: '屋根工事施工例'
+                },
+                {
+                    icon: '🏡',
+                    title: '全面改修',
+                    description: '間取り変更を含む大規模リフォーム。ライフスタイルに合わせた住まいづくりをご提案します。住みながらの工事も可能で、快適な新生活をサポートします。',
+                    features: [
+                        '間取り変更',
+                        'スケルトンリフォーム',
+                        '断熱改修',
+                        'バリアフリー改修',
+                        '電気・給排水工事',
+                        'フローリング張替え'
+                    ],
+                    price: '500万円～1500万円',
+                    image: '全面改修施工例'
+                }
+            ];
+
+            return (
+                <section className="services section">
+                    <div className="container">
+                        <h2 className="section-title">リフォームサービス一覧</h2>
+                        <div className="services-grid">
+                            {services.map((service, index) => (
+                                <div key={index} className="service-item">
+                                    <div className="service-visual">
+                                        <div className="service-image">
+                                            {service.image}
+                                        </div>
+                                    </div>
+                                    <div className="service-content">
+                                        <h3 className="service-title">
+                                            <span className="service-icon">{service.icon}</span>
+                                            {service.title}
+                                        </h3>
+                                        <div className="price-badge">{service.price}</div>
+                                        <p className="service-description body-text">
+                                            {service.description}
+                                        </p>
+                                        <ul className="service-features">
+                                            {service.features.map((feature, i) => (
+                                                <li key={i}>{feature}</li>
+                                            ))}
+                                        </ul>
+                                        <div className="service-cta">
+                                            <a href="portfolio.html" className="btn">施工事例を見る</a>
+                                            <a href="contact.html" className="btn btn-secondary" style={{marginLeft: '1rem'}}>相談する</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function ProcessSection() {
+            const steps = [
+                {
+                    number: '1',
+                    icon: '📞',
+                    title: 'お問い合わせ',
+                    description: 'お電話またはお問い合わせフォームからご連絡ください。ご要望やご予算をお聞かせください。'
+                },
+                {
+                    number: '2',
+                    icon: '📏',
+                    title: '現地調査・お見積り',
+                    description: '現地にお伺いして詳細な調査を行い、正確なお見積りを作成いたします。（無料）'
+                },
+                {
+                    number: '3',
+                    icon: '📋',
+                    title: 'ご契約',
+                    description: 'お見積り内容にご納得いただけましたら、工事契約を締結させていただきます。'
+                },
+                {
+                    number: '4',
+                    icon: '🔨',
+                    title: '施工',
+                    description: '経験豊富な職人が丁寧に施工いたします。工事中も随時進捗をご報告します。'
+                },
+                {
+                    number: '5',
+                    icon: '✅',
+                    title: '完工・お引き渡し',
+                    description: 'お客様と一緒に仕上がりを確認し、ご満足いただけましたらお引き渡しとなります。'
+                },
+                {
+                    number: '6',
+                    icon: '🤝',
+                    title: 'アフターフォロー',
+                    description: '工事完了後も定期点検やメンテナンスでお客様の住まいをサポートします。'
+                }
+            ];
+
+            return (
+                <section className="process section">
+                    <div className="container">
+                        <h2 className="section-title">施工の流れ</h2>
+                        <div className="process-grid">
+                            {steps.map((step, index) => (
+                                <div key={index} className="process-step">
+                                    <div className="process-number">{step.number}</div>
+                                    <div className="process-icon">{step.icon}</div>
+                                    <h3 className="process-title">{step.title}</h3>
+                                    <p className="process-description">{step.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function FAQSection() {
+            const [activeIndex, setActiveIndex] = useState(null);
+
+            const faqs = [
+                {
+                    question: '見積りは無料ですか？',
+                    answer: 'はい、現地調査・お見積りは完全無料です。横浜市内・川崎市の一部であれば出張費も無料で対応いたします。'
+                },
+                {
+                    question: '住みながらリフォームはできますか？',
+                    answer: '可能です。当社では住みながらリフォームを得意としており、お客様の生活に配慮した工事計画を立てて施工いたします。'
+                },
+                {
+                    question: '工事期間はどのくらいかかりますか？',
+                    answer: '工事内容により異なります。キッチン・浴室は3〜7日程度、外壁塗装は10〜14日程度、全面改修は1〜3ヶ月程度が目安です。'
+                },
+                {
+                    question: '支払い方法を教えてください',
+                    answer: '現金、銀行振込、各種クレジットカードに対応しています。また、リフォームローンのご相談も承っています。'
+                },
+                {
+                    question: '保証はありますか？',
+                    answer: 'はい、工事内容に応じて1〜10年の保証をお付けしています。アフターサービスも充実していますのでご安心ください。'
+                },
+                {
+                    question: '急な修理にも対応してもらえますか？',
+                    answer: '緊急性の高い修理（水漏れ、雨漏りなど）には迅速に対応いたします。まずはお電話でご相談ください。'
+                }
+            ];
+
+            const toggleFAQ = (index) => {
+                setActiveIndex(activeIndex === index ? null : index);
+            };
+
+            return (
+                <section className="faq section">
+                    <div className="container">
+                        <h2 className="section-title">よくあるご質問</h2>
+                        <div className="faq-list">
+                            {faqs.map((faq, index) => (
+                                <div key={index} className="faq-item">
+                                    <button 
+                                        className={`faq-question ${activeIndex === index ? 'active' : ''}`}
+                                        onClick={() => toggleFAQ(index)}
+                                    >
+                                        {faq.question}
+                                    </button>
+                                    <div className={`faq-answer ${activeIndex === index ? 'active' : ''}`}>
+                                        <div className="faq-answer-content">
+                                            {faq.answer}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function CTASection() {
+            return (
+                <section className="cta section">
+                    <div className="container">
+                        <div className="cta-content">
+                            <h2 className="cta-title section-title">まずはお気軽にご相談ください</h2>
+                            <p className="cta-description">
+                                現地調査・お見積りは無料です。<br />
+                                どんな小さなリフォームでもお気軽にお問い合わせください。
+                            </p>
+                            <div className="cta-buttons">
+                                <a href="tel:045-123-4567" className="btn btn-white">
+                                    📞 電話で相談する<br />
+                                    <small>045-123-4567</small>
+                                </a>
+                                <a href="contact.html" className="btn btn-secondary">
+                                    📧 メールで相談する
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-section">
+                                <h4>山田建築</h4>
+                                <p>横浜市のリフォーム専門店</p>
+                                <p>〒220-0000</p>
+                                <p>神奈川県横浜市西区◯◯町1-2-3</p>
+                                <p>営業時間: 9:00～18:00</p>
+                                <p>定休日: 日曜日</p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>サービス</h4>
+                                <p><a href="services.html">キッチンリフォーム</a></p>
+                                <p><a href="services.html">浴室リフォーム</a></p>
+                                <p><a href="services.html">外壁塗装</a></p>
+                                <p><a href="services.html">屋根工事</a></p>
+                                <p><a href="services.html">全面改修</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>お問い合わせ</h4>
+                                <p>📞 045-123-4567</p>
+                                <p>📧 info@yamada-kenchiku.jp</p>
+                                <p><a href="contact.html">お問い合わせフォーム</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>営業エリア</h4>
+                                <p>横浜市内全域</p>
+                                <p>川崎市の一部</p>
+                                <p>※出張費無料エリア</p>
+                                <p><a href="about.html">詳しくはこちら</a></p>
+                            </div>
+                        </div>
+                        <div className="footer-bottom">
+                            <p>&copy; 2024 山田建築. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

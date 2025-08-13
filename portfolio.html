@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施工事例 - 山田建築 | 横浜のリフォーム専門店</title>
+    <meta name="description" content="山田建築の施工事例をご紹介。キッチン、浴室、外壁塗装、全面改修など幅広いリフォーム実績。ビフォーアフター写真とお客様の声も掲載。">
+    <meta name="keywords" content="山田建築, 施工事例, リフォーム実績, ビフォーアフター, お客様の声, 横浜市">
+    
+    <!-- React and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        /* 共通スタイル */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-navy: #1e3a5f;
+            --primary-white: #ffffff;
+            --accent-gold: #d4af37;
+            --text-gray: #666666;
+            --bg-cream: #faf9f7;
+            --bg-light-gray: #f5f5f5;
+            --shadow-soft: 0 20px 40px rgba(0,0,0,0.1);
+            --transition-smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            line-height: 1.8;
+            color: #333333;
+            background-color: var(--primary-white);
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            color: var(--primary-white);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+            color: var(--primary-navy);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .heading-large {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: var(--primary-navy);
+        }
+
+        .body-text {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+            color: var(--text-gray);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 3rem);
+        }
+
+        .section {
+            padding: clamp(4rem, 8vh, 8rem) 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+            cursor: pointer;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #2c5282 100%);
+            color: var(--primary-white);
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: var(--bg-light-gray);
+            padding: 1rem 0;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .breadcrumb-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-gray);
+        }
+
+        /* Filter Buttons */
+        .filter-section {
+            background: var(--bg-cream);
+            padding: 2rem 0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            background: var(--primary-white);
+            color: var(--primary-navy);
+            border: 2px solid var(--primary-navy);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-navy);
+            color: var(--primary-white);
+        }
+
+        /* Portfolio Grid */
+        .portfolio {
+            background: var(--primary-white);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .portfolio-item {
+            background: var(--primary-white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .portfolio-images {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e8e8e8, #f5f5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-gray);
+        }
+
+        .before-after-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-gold);
+            color: var(--primary-white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .before-after-toggle:hover {
+            background: #b8941f;
+        }
+
+        .portfolio-content {
+            padding: 2rem;
+        }
+
+        .portfolio-category {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .portfolio-title {
+            color: var(--primary-navy);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .portfolio-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            color: var(--primary-navy);
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: var(--text-gray);
+        }
+
+        .portfolio-description {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .customer-voice {
+            background: var(--bg-light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .voice-text {
+            font-style: italic;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .voice-author {
+            font-size: 0.9rem;
+            color: var(--primary-navy);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--bg-cream);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 100;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--primary-navy);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .stat-description {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--primary-white);
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            position: relative;
+            transform: scale(0.8);
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 1;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #e8e8e8, #f5f5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-gray);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: var(--primary-navy);
+            color: var(--primary-white);
+        }
+
+        .cta-content {
+            text-align: center;
+        }
+
+        .cta-title {
+            color: var(--primary-white);
+            margin-bottom: 2rem;
+        }
+
+        .cta-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4);
+            background: #2c5282;
+        }
+
+        .btn-white {
+            background: var(--primary-white);
+            color: var(--primary-navy);
+            box-shadow: none;
+        }
+
+        .btn-white:hover {
+            background: var(--bg-light-gray);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-white);
+            border: 2px solid var(--primary-white);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-white);
+            color: var(--primary-navy);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: var(--primary-white);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 2rem;
+            }
+
+            .nav {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .portfolio-details {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .animate-scale {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [scrolled, setScrolled] = useState(false);
+            const [activeFilter, setActiveFilter] = useState('all');
+            const [selectedItem, setSelectedItem] = useState(null);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 100);
+                };
+
+                const initAnimations = () => {
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Stats animation only (portfolio items are handled separately)
+                    gsap.utils.toArray('.stat-item').forEach((item, i) => {
+                        gsap.to(item, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            delay: i * 0.2,
+                            scrollTrigger: {
+                                trigger: item,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                initAnimations();
+
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                };
+            }, []);
+
+            return (
+                <>
+                    <Header scrolled={scrolled} />
+                    <PageHero />
+                    <Breadcrumb />
+                    <FilterSection activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
+                    <PortfolioSection activeFilter={activeFilter} setSelectedItem={setSelectedItem} />
+                    <StatsSection />
+                    <CTASection />
+                    <Footer />
+                    {selectedItem && (
+                        <Modal item={selectedItem} onClose={() => setSelectedItem(null)} />
+                    )}
+                </>
+            );
+        }
+
+        function Header({ scrolled }) {
+            return (
+                <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+                    <div className="container">
+                        <div className="header-content">
+                            <a href="index.html" className="logo">山田建築</a>
+                            <nav>
+                                <ul className="nav">
+                                    <li><a href="index.html" className="nav-link">トップページ</a></li>
+                                    <li><a href="about.html" className="nav-link">会社概要</a></li>
+                                    <li><a href="services.html" className="nav-link">サービス内容</a></li>
+                                    <li><a href="portfolio.html" className="nav-link active">施工事例</a></li>
+                                    <li><a href="contact.html" className="nav-link">お問い合わせ</a></li>
+                                </ul>
+                                <button className="mobile-menu-btn">☰</button>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        function PageHero() {
+            return (
+                <section className="page-hero">
+                    <div className="container">
+                        <h1 className="page-title">施工事例</h1>
+                        <p className="page-subtitle">
+                            これまでに手がけた様々なリフォーム事例を<br />
+                            ビフォーアフター写真とお客様の声とともにご紹介
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        function Breadcrumb() {
+            return (
+                <section className="breadcrumb">
+                    <div className="container">
+                        <ul className="breadcrumb-list">
+                            <li><a href="index.html" className="breadcrumb-link">トップページ</a></li>
+                            <li className="breadcrumb-separator">></li>
+                            <li>施工事例</li>
+                        </ul>
+                    </div>
+                </section>
+            );
+        }
+
+        function FilterSection({ activeFilter, setActiveFilter }) {
+            const filters = [
+                { key: 'all', label: '全て' },
+                { key: 'kitchen', label: 'キッチン' },
+                { key: 'bathroom', label: '浴室' },
+                { key: 'toilet', label: 'トイレ' },
+                { key: 'exterior', label: '外壁・屋根' },
+                { key: 'renovation', label: '全面改修' }
+            ];
+
+            return (
+                <section className="filter-section">
+                    <div className="container">
+                        <div className="filter-buttons">
+                            {filters.map(filter => (
+                                <button
+                                    key={filter.key}
+                                    className={`filter-btn ${activeFilter === filter.key ? 'active' : ''}`}
+                                    onClick={() => setActiveFilter(filter.key)}
+                                >
+                                    {filter.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function PortfolioSection({ activeFilter, setSelectedItem }) {
+            const [portfolioItems] = useState([
+                {
+                    id: 1,
+                    category: 'kitchen',
+                    categoryLabel: 'キッチンリフォーム',
+                    title: 'モダンアイランドキッチン',
+                    location: '横浜市中区 T様邸',
+                    period: '5日間',
+                    cost: '150万円',
+                    area: '12㎡',
+                    description: '古いキッチンを最新のアイランドキッチンに変更。収納力を大幅にアップし、家族のコミュニケーションが生まれる開放的な空間を実現しました。',
+                    voice: '料理が楽しくなりました。家族との会話も増えて、キッチンが家の中心になっています。',
+                    customer: 'T様（50代・主婦）',
+                    image: 'キッチンリフォーム施工例'
+                },
+                {
+                    id: 2,
+                    category: 'bathroom',
+                    categoryLabel: '浴室リフォーム',
+                    title: 'ホテルライクバスルーム',
+                    location: '横浜市西区 S様邸',
+                    period: '4日間',
+                    cost: '120万円',
+                    area: '4㎡',
+                    description: 'タイル張りの在来浴室を、保温性に優れた最新ユニットバスに交換。浴室乾燥機も設置し、快適性が大幅に向上しました。',
+                    voice: '寒い冬でも温かく、お掃除も楽になりました。まるでホテルのお風呂みたいです。',
+                    customer: 'S様（40代・会社員）',
+                    image: '浴室リフォーム施工例'
+                },
+                {
+                    id: 3,
+                    category: 'toilet',
+                    categoryLabel: 'トイレリフォーム',
+                    title: '快適トイレ空間',
+                    location: '横浜市港北区 I様邸',
+                    period: '1日間',
+                    cost: '35万円',
+                    area: '2㎡',
+                    description: '最新の温水洗浄便座付きトイレに交換。手すりも設置し、どの年代の方にも優しいトイレ空間になりました。',
+                    voice: '1日で工事が完了して驚きました。最新の機能で快適に使えています。',
+                    customer: 'I様（60代・主婦）',
+                    image: 'トイレリフォーム施工例'
+                },
+                {
+                    id: 4,
+                    category: 'exterior',
+                    categoryLabel: '外壁塗装',
+                    title: '住まいの美観復活',
+                    location: '横浜市南区 Y様邸',
+                    period: '10日間',
+                    cost: '80万円',
+                    area: '120㎡',
+                    description: '15年ぶりの外壁塗装で、住まいが新築のような輝きを取り戻しました。耐久性に優れたシリコン系塗料を使用。',
+                    voice: 'ご近所の方にも褒められて嬉しいです。これで安心してまた長く住めます。',
+                    customer: 'Y様（50代・自営業）',
+                    image: '外壁塗装施工例'
+                },
+                {
+                    id: 5,
+                    category: 'renovation',
+                    categoryLabel: '全面改修',
+                    title: 'ライフスタイル改築',
+                    location: '横浜市青葉区 K様邸',
+                    period: '45日間',
+                    cost: '800万円',
+                    area: '80㎡',
+                    description: '築30年の住まいを現代的なライフスタイルに合わせて全面改修。間取り変更により、開放感あふれる住空間を実現しました。',
+                    voice: '住みながらの工事でしたが、丁寧に配慮していただき感謝しています。まるで新築のようです。',
+                    customer: 'K様（40代・夫婦）',
+                    image: '全面改修施工例'
+                },
+                {
+                    id: 6,
+                    category: 'exterior',
+                    categoryLabel: '屋根工事',
+                    title: '安心の屋根リフォーム',
+                    location: '横浜市戸塚区 M様邸',
+                    period: '8日間',
+                    cost: '65万円',
+                    area: '80㎡',
+                    description: '色褪せていた屋根を耐久性の高いフッ素系塗料で塗装。雨樋も交換し、住まいの保護機能を向上させました。',
+                    voice: '雨の日も安心して過ごせるようになりました。職人さんの丁寧な作業に感動しました。',
+                    customer: 'M様（60代・年金生活）',
+                    image: '屋根工事施工例'
+                }
+            ]);
+
+            const filteredItems = activeFilter === 'all' 
+                ? portfolioItems 
+                : portfolioItems.filter(item => item.category === activeFilter);
+
+            // フィルタリング時のアニメーション処理
+            useEffect(() => {
+                const items = document.querySelectorAll('.portfolio-item');
+                items.forEach((item, i) => {
+                    // 既存のGSAPアニメーションをクリア
+                    gsap.set(item, { clearProps: "all" });
+                    // 新しいアニメーションを適用
+                    gsap.fromTo(item, 
+                        { opacity: 0, scale: 0.9 },
+                        { 
+                            opacity: 1, 
+                            scale: 1, 
+                            duration: 0.6,
+                            delay: i * 0.1,
+                            ease: "power2.out"
+                        }
+                    );
+                });
+            }, [activeFilter, filteredItems]);
+
+            return (
+                <section className="portfolio section">
+                    <div className="container">
+                        <h2 className="section-title">施工事例一覧</h2>
+                        <div className="portfolio-grid">
+                            {filteredItems.map((item, index) => (
+                                <div 
+                                    key={`${item.id}-${activeFilter}`} 
+                                    className="portfolio-item" 
+                                    onClick={() => setSelectedItem(item)}
+                                    style={{ opacity: 0, transform: 'scale(0.9)' }}
+                                >
+                                    <div className="portfolio-images">
+                                        <div className="portfolio-image">
+                                            {item.image}
+                                        </div>
+                                        <button className="before-after-toggle">BEFORE/AFTER</button>
+                                    </div>
+                                    <div className="portfolio-content">
+                                        <div className="portfolio-category">{item.categoryLabel}</div>
+                                        <h3 className="portfolio-title">{item.title}</h3>
+                                        <div className="portfolio-details">
+                                            <div className="detail-item">
+                                                <span className="detail-label">場所:</span>
+                                                <span className="detail-value">{item.location}</span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-label">工期:</span>
+                                                <span className="detail-value">{item.period}</span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-label">費用:</span>
+                                                <span className="detail-value">{item.cost}</span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-label">面積:</span>
+                                                <span className="detail-value">{item.area}</span>
+                                            </div>
+                                        </div>
+                                        <p className="portfolio-description">{item.description}</p>
+                                        <div className="customer-voice">
+                                            <p className="voice-text">"{item.voice}"</p>
+                                            <div className="voice-author">— {item.customer}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function StatsSection() {
+            const stats = [
+                {
+                    number: '200+',
+                    label: '施工実績',
+                    description: '累計施工件数'
+                },
+                {
+                    number: '15年',
+                    label: '営業歴',
+                    description: '地域密着の実績'
+                },
+                {
+                    number: '100%',
+                    label: 'お客様満足度',
+                    description: 'アンケート結果'
+                },
+                {
+                    number: '8名',
+                    label: 'スタッフ数',
+                    description: 'プロフェッショナル'
+                }
+            ];
+
+            return (
+                <section className="stats section">
+                    <div className="container">
+                        <h2 className="section-title">山田建築の実績</h2>
+                        <div className="stats-grid">
+                            {stats.map((stat, index) => (
+                                <div key={index} className="stat-item">
+                                    <div className="stat-number">{stat.number}</div>
+                                    <div className="stat-label">{stat.label}</div>
+                                    <div className="stat-description">{stat.description}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Modal({ item, onClose }) {
+            return (
+                <div className="modal-overlay active" onClick={onClose}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close" onClick={onClose}>×</button>
+                        <div className="modal-image">
+                            詳細写真: {item.image}
+                        </div>
+                        <div className="modal-body">
+                            <div className="portfolio-category">{item.categoryLabel}</div>
+                            <h3 className="portfolio-title">{item.title}</h3>
+                            <div className="portfolio-details">
+                                <div className="detail-item">
+                                    <span className="detail-label">場所:</span>
+                                    <span className="detail-value">{item.location}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <span className="detail-label">工期:</span>
+                                    <span className="detail-value">{item.period}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <span className="detail-label">費用:</span>
+                                    <span className="detail-value">{item.cost}</span>
+                                </div>
+                                <div className="detail-item">
+                                    <span className="detail-label">面積:</span>
+                                    <span className="detail-value">{item.area}</span>
+                                </div>
+                            </div>
+                            <p className="portfolio-description">{item.description}</p>
+                            <div className="customer-voice">
+                                <p className="voice-text">"{item.voice}"</p>
+                                <div className="voice-author">— {item.customer}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function CTASection() {
+            return (
+                <section className="cta section">
+                    <div className="container">
+                        <div className="cta-content">
+                            <h2 className="cta-title section-title">あなたの理想の住まいを実現しませんか？</h2>
+                            <p className="cta-description">
+                                無料現地調査・お見積りで、まずはお気軽にご相談ください。<br />
+                                経験豊富なスタッフがあなたの理想を形にします。
+                            </p>
+                            <div className="cta-buttons">
+                                <a href="tel:045-123-4567" className="btn btn-white">
+                                    📞 電話で相談する<br />
+                                    <small>045-123-4567</small>
+                                </a>
+                                <a href="contact.html" className="btn btn-secondary">
+                                    📧 お問い合わせフォーム
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-section">
+                                <h4>山田建築</h4>
+                                <p>横浜市のリフォーム専門店</p>
+                                <p>〒220-0000</p>
+                                <p>神奈川県横浜市西区◯◯町1-2-3</p>
+                                <p>営業時間: 9:00～18:00</p>
+                                <p>定休日: 日曜日</p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>サービス</h4>
+                                <p><a href="services.html">キッチンリフォーム</a></p>
+                                <p><a href="services.html">浴室リフォーム</a></p>
+                                <p><a href="services.html">外壁塗装</a></p>
+                                <p><a href="services.html">屋根工事</a></p>
+                                <p><a href="services.html">全面改修</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>お問い合わせ</h4>
+                                <p>📞 045-123-4567</p>
+                                <p>📧 info@yamada-kenchiku.jp</p>
+                                <p><a href="contact.html">お問い合わせフォーム</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>営業エリア</h4>
+                                <p>横浜市内全域</p>
+                                <p>川崎市の一部</p>
+                                <p>※出張費無料エリア</p>
+                                <p><a href="about.html">詳しくはこちら</a></p>
+                            </div>
+                        </div>
+                        <div className="footer-bottom">
+                            <p>&copy; 2024 山田建築. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

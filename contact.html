@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ - 山田建築 | 横浜のリフォーム専門店</title>
+    <meta name="description" content="山田建築へのお問い合わせ。現地調査・お見積り無料。電話、メール、お問い合わせフォームから承ります。横浜市内出張費無料。">
+    <meta name="keywords" content="山田建築, お問い合わせ, 相談, 見積り, 現地調査, 横浜市, リフォーム">
+    
+    <!-- React and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        /* 共通スタイル */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-navy: #1e3a5f;
+            --primary-white: #ffffff;
+            --accent-gold: #d4af37;
+            --text-gray: #666666;
+            --bg-cream: #faf9f7;
+            --bg-light-gray: #f5f5f5;
+            --shadow-soft: 0 20px 40px rgba(0,0,0,0.1);
+            --transition-smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, 'MS Pゴシック', sans-serif;
+            line-height: 1.8;
+            color: #333333;
+            background-color: var(--primary-white);
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            color: var(--primary-white);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+            color: var(--primary-navy);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .heading-large {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: var(--primary-navy);
+        }
+
+        .body-text {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+            color: var(--text-gray);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 3rem);
+        }
+
+        .section {
+            padding: clamp(4rem, 8vh, 8rem) 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--primary-navy);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+            cursor: pointer;
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #2c5282 100%);
+            color: var(--primary-white);
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: var(--bg-light-gray);
+            padding: 1rem 0;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .breadcrumb-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--accent-gold);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-gray);
+        }
+
+        /* Contact Methods */
+        .contact-methods {
+            background: var(--bg-cream);
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .method-card {
+            background: var(--primary-white);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: var(--transition-smooth);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .method-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .method-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .method-title {
+            color: var(--primary-navy);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .method-description {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .method-info {
+            margin-bottom: 2rem;
+        }
+
+        .method-primary {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .method-secondary {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.4);
+            background: #2c5282;
+        }
+
+        .btn-accent {
+            background: var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-accent:hover {
+            background: #b8941f;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Contact Form */
+        .contact-form-section {
+            background: var(--primary-white);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: var(--bg-light-gray);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            color: var(--primary-navy);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-navy);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 0.2rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            background: var(--primary-white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5rem 1.5rem;
+            padding-right: 2.5rem;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: var(--primary-white);
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .checkbox-item:hover {
+            background: #f8f8f8;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-gold);
+        }
+
+        .checkbox-label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: var(--primary-white);
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .radio-item:hover {
+            background: #f8f8f8;
+        }
+
+        .radio-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-gold);
+        }
+
+        .radio-label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Form Footer */
+        .form-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .form-note {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .submit-btn {
+            padding: 1.5rem 4rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Business Hours */
+        .business-info {
+            background: var(--bg-cream);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .info-card {
+            background: var(--primary-white);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .info-card-title {
+            color: var(--primary-navy);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-card-icon {
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .info-label {
+            color: var(--primary-navy);
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--text-gray);
+        }
+
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        /* Access Map */
+        .access-section {
+            background: var(--primary-white);
+        }
+
+        .access-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .access-info {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .access-map {
+            height: 400px;
+            background: linear-gradient(45deg, #e8e8e8, #f5f5f5);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .access-details {
+            background: var(--bg-light-gray);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .access-title {
+            color: var(--primary-navy);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .access-list {
+            list-style: none;
+        }
+
+        .access-item {
+            padding: 0.5rem 0;
+            color: var(--text-gray);
+        }
+
+        .access-item strong {
+            color: var(--primary-navy);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: var(--primary-white);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .access-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group,
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .methods-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .access-map {
+                height: 300px;
+            }
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .animate-slide-left {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+
+        .animate-slide-right {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 100);
+                };
+
+                const initAnimations = () => {
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Method cards animation
+                    gsap.utils.toArray('.method-card').forEach((card, i) => {
+                        gsap.to(card, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            delay: i * 0.2,
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
+
+                    // Form animation
+                    gsap.to('.contact-form', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: '.contact-form',
+                            start: 'top 85%',
+                        }
+                    });
+
+                    // Info cards animation
+                    gsap.utils.toArray('.info-card').forEach((card, i) => {
+                        gsap.to(card, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            delay: i * 0.1,
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
+
+                    // Access section animations
+                    gsap.to('.access-info', {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: '.access-info',
+                            start: 'top 85%',
+                        }
+                    });
+
+                    gsap.to('.access-map', {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1,
+                        delay: 0.3,
+                        scrollTrigger: {
+                            trigger: '.access-map',
+                            start: 'top 85%',
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                initAnimations();
+
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                };
+            }, []);
+
+            return (
+                <>
+                    <Header scrolled={scrolled} />
+                    <PageHero />
+                    <Breadcrumb />
+                    <ContactMethods />
+                    <ContactFormSection />
+                    <BusinessInfo />
+                    <AccessSection />
+                    <Footer />
+                </>
+            );
+        }
+
+        function Header({ scrolled }) {
+            return (
+                <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+                    <div className="container">
+                        <div className="header-content">
+                            <a href="index.html" className="logo">山田建築</a>
+                            <nav>
+                                <ul className="nav">
+                                    <li><a href="index.html" className="nav-link">トップページ</a></li>
+                                    <li><a href="about.html" className="nav-link">会社概要</a></li>
+                                    <li><a href="services.html" className="nav-link">サービス内容</a></li>
+                                    <li><a href="portfolio.html" className="nav-link">施工事例</a></li>
+                                    <li><a href="contact.html" className="nav-link active">お問い合わせ</a></li>
+                                </ul>
+                                <button className="mobile-menu-btn">☰</button>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        function PageHero() {
+            return (
+                <section className="page-hero">
+                    <div className="container">
+                        <h1 className="page-title">お問い合わせ</h1>
+                        <p className="page-subtitle">
+                            現地調査・お見積りは無料です。<br />
+                            どんな小さなことでもお気軽にご相談ください。
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        function Breadcrumb() {
+            return (
+                <section className="breadcrumb">
+                    <div className="container">
+                        <ul className="breadcrumb-list">
+                            <li><a href="index.html" className="breadcrumb-link">トップページ</a></li>
+                            <li className="breadcrumb-separator">></li>
+                            <li>お問い合わせ</li>
+                        </ul>
+                    </div>
+                </section>
+            );
+        }
+
+        function ContactMethods() {
+            return (
+                <section className="contact-methods section">
+                    <div className="container">
+                        <h2 className="section-title">お問い合わせ方法</h2>
+                        <div className="methods-grid">
+                            <div className="method-card">
+                                <div className="method-icon">📞</div>
+                                <h3 className="method-title">お電話でのお問い合わせ</h3>
+                                <p className="method-description">
+                                    お急ぎの方はお電話が便利です。<br />
+                                    専門スタッフが直接お答えします。
+                                </p>
+                                <div className="method-info">
+                                    <div className="method-primary">045-123-4567</div>
+                                    <div className="method-secondary">受付時間: 9:00～18:00（日曜定休）</div>
+                                </div>
+                                <a href="tel:045-123-4567" className="btn btn-accent">今すぐ電話する</a>
+                            </div>
+                            
+                            <div className="method-card">
+                                <div className="method-icon">📧</div>
+                                <h3 className="method-title">メールでのお問い合わせ</h3>
+                                <p className="method-description">
+                                    24時間受付しております。<br />
+                                    2営業日以内にご返信いたします。
+                                </p>
+                                <div className="method-info">
+                                    <div className="method-primary">info@yamada-kenchiku.jp</div>
+                                    <div className="method-secondary">24時間受付・2営業日以内返信</div>
+                                </div>
+                                <a href="mailto:info@yamada-kenchiku.jp" className="btn">メールを送る</a>
+                            </div>
+                            
+                            <div className="method-card">
+                                <div className="method-icon">📝</div>
+                                <h3 className="method-title">お問い合わせフォーム</h3>
+                                <p className="method-description">
+                                    詳しいご相談内容をお聞かせください。<br />
+                                    最適なプランをご提案いたします。
+                                </p>
+                                <div className="method-info">
+                                    <div className="method-primary">下記フォームから</div>
+                                    <div className="method-secondary">詳細なご相談が可能です</div>
+                                </div>
+                                <a href="#contact-form" className="btn">フォームを開く</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function ContactFormSection() {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                phone: '',
+                address: '',
+                renovationType: [],
+                budget: '',
+                urgency: '',
+                message: ''
+            });
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert('これはデモサイトです。実際のお問い合わせは電話番号：045-123-4567 またはメール：info@yamada-kenchiku.jp までお願いいたします。');
+            };
+
+            const handleInputChange = (e) => {
+                const { name, value, type, checked } = e.target;
+                
+                if (type === 'checkbox') {
+                    setFormData(prev => ({
+                        ...prev,
+                        renovationType: checked
+                            ? [...prev.renovationType, value]
+                            : prev.renovationType.filter(item => item !== value)
+                    }));
+                } else {
+                    setFormData(prev => ({ ...prev, [name]: value }));
+                }
+            };
+
+            return (
+                <section id="contact-form" className="contact-form-section section">
+                    <div className="container">
+                        <h2 className="section-title">お問い合わせフォーム</h2>
+                        <div className="form-container">
+                            <form className="contact-form" onSubmit={handleSubmit}>
+                                <div className="form-section">
+                                    <h3 className="form-section-title">基本情報</h3>
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label className="form-label">
+                                                お名前 <span className="required">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                className="form-input"
+                                                value={formData.name}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">
+                                                電話番号 <span className="required">*</span>
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                className="form-input"
+                                                value={formData.phone}
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">
+                                            メールアドレス <span className="required">*</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            className="form-input"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">
+                                            住所（市区まで） <span className="required">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="address"
+                                            className="form-input"
+                                            placeholder="例：横浜市中区"
+                                            value={formData.address}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-section">
+                                    <h3 className="form-section-title">リフォーム内容</h3>
+                                    <div className="form-group">
+                                        <label className="form-label">リフォーム箇所（複数選択可）</label>
+                                        <div className="checkbox-group">
+                                            {[
+                                                'キッチン',
+                                                '浴室',
+                                                'トイレ',
+                                                '洗面所',
+                                                '外壁',
+                                                '屋根',
+                                                '全面改修',
+                                                'その他'
+                                            ].map(item => (
+                                                <div key={item} className="checkbox-item">
+                                                    <input
+                                                        type="checkbox"
+                                                        id={item}
+                                                        value={item}
+                                                        className="checkbox-input"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <label htmlFor={item} className="checkbox-label">{item}</label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="form-group">
+                                        <label className="form-label">予算の目安</label>
+                                        <select
+                                            name="budget"
+                                            className="form-input form-select"
+                                            value={formData.budget}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">選択してください</option>
+                                            <option value="50万円未満">50万円未満</option>
+                                            <option value="50〜100万円">50〜100万円</option>
+                                            <option value="100〜300万円">100〜300万円</option>
+                                            <option value="300〜500万円">300〜500万円</option>
+                                            <option value="500万円以上">500万円以上</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="form-label">工事時期のご希望</label>
+                                        <div className="radio-group">
+                                            {[
+                                                '急いでいる',
+                                                '3ヶ月以内',
+                                                '半年以内',
+                                                '1年以内',
+                                                '未定'
+                                            ].map(item => (
+                                                <div key={item} className="radio-item">
+                                                    <input
+                                                        type="radio"
+                                                        id={item}
+                                                        name="urgency"
+                                                        value={item}
+                                                        className="radio-input"
+                                                        onChange={handleInputChange}
+                                                    />
+                                                    <label htmlFor={item} className="radio-label">{item}</label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="form-section">
+                                    <h3 className="form-section-title">詳細内容</h3>
+                                    <div className="form-group">
+                                        <label className="form-label">お問い合わせ内容</label>
+                                        <textarea
+                                            name="message"
+                                            className="form-input form-textarea"
+                                            placeholder="ご要望やご質問など、詳しくお聞かせください"
+                                            value={formData.message}
+                                            onChange={handleInputChange}
+                                        ></textarea>
+                                    </div>
+                                </div>
+
+                                <div className="form-footer">
+                                    <p className="form-note">
+                                        ※このフォームは見た目のみのデモです。実際のお問い合わせは上記の電話番号またはメールアドレスまでお願いいたします。<br />
+                                        ※個人情報は適切に管理し、お問い合わせ対応以外の目的には使用いたしません。
+                                    </p>
+                                    <button type="submit" className="btn submit-btn btn-accent">
+                                        送信する
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function BusinessInfo() {
+            return (
+                <section className="business-info section">
+                    <div className="container">
+                        <h2 className="section-title">営業時間・対応エリア</h2>
+                        <div className="info-grid">
+                            <div className="info-card">
+                                <h3 className="info-card-title">
+                                    <span className="info-card-icon">🕒</span>
+                                    営業時間
+                                </h3>
+                                <ul className="info-list">
+                                    <li className="info-item">
+                                        <span className="info-label">営業時間</span>
+                                        <span className="info-value">9:00 〜 18:00</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">定休日</span>
+                                        <span className="info-value">日曜日</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">緊急対応</span>
+                                        <span className="info-value highlight">対応可能</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">現地調査</span>
+                                        <span className="info-value highlight">無料</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="info-card">
+                                <h3 className="info-card-title">
+                                    <span className="info-card-icon">📍</span>
+                                    対応エリア
+                                </h3>
+                                <ul className="info-list">
+                                    <li className="info-item">
+                                        <span className="info-label">横浜市内全域</span>
+                                        <span className="info-value highlight">出張費無料</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">川崎市一部</span>
+                                        <span className="info-value highlight">出張費無料</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">その他地域</span>
+                                        <span className="info-value">要相談</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">お見積り</span>
+                                        <span className="info-value highlight">無料</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="info-card">
+                                <h3 className="info-card-title">
+                                    <span className="info-card-icon">💰</span>
+                                    料金について
+                                </h3>
+                                <ul className="info-list">
+                                    <li className="info-item">
+                                        <span className="info-label">現地調査</span>
+                                        <span className="info-value highlight">無料</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">お見積り</span>
+                                        <span className="info-value highlight">無料</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">支払い方法</span>
+                                        <span className="info-value">現金・振込・カード</span>
+                                    </li>
+                                    <li className="info-item">
+                                        <span className="info-label">ローン相談</span>
+                                        <span className="info-value highlight">対応可能</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function AccessSection() {
+            return (
+                <section className="access-section section">
+                    <div className="container">
+                        <h2 className="section-title">会社所在地・アクセス</h2>
+                        <div className="access-content">
+                            <div className="access-info">
+                                <div className="access-details">
+                                    <h3 className="access-title">山田建築</h3>
+                                    <ul className="access-list">
+                                        <li className="access-item">
+                                            <strong>住所:</strong> 〒220-0000 神奈川県横浜市西区◯◯町1-2-3
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>電話:</strong> 045-123-4567
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>FAX:</strong> 045-123-4568
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>メール:</strong> info@yamada-kenchiku.jp
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div className="access-details">
+                                    <h3 className="access-title">交通アクセス</h3>
+                                    <ul className="access-list">
+                                        <li className="access-item">
+                                            <strong>最寄り駅:</strong> JR横浜駅西口より徒歩10分
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>地下鉄:</strong> 横浜市営地下鉄ブルーライン横浜駅より徒歩8分
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>お車:</strong> 横浜駅西口方面、専用駐車場完備
+                                        </li>
+                                        <li className="access-item">
+                                            <strong>目印:</strong> ◯◯ビル1階、看板が目印です
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <p className="body-text">
+                                    ご来社の際は事前にお電話でご連絡ください。<br />
+                                    お客様専用の駐車場もご用意しております。
+                                </p>
+                            </div>
+                            
+                            <div className="access-map">
+                                アクセスマップ<br />
+                                横浜市西区◯◯町1-2-3
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="container">
+                        <div className="footer-content">
+                            <div className="footer-section">
+                                <h4>山田建築</h4>
+                                <p>横浜市のリフォーム専門店</p>
+                                <p>〒220-0000</p>
+                                <p>神奈川県横浜市西区◯◯町1-2-3</p>
+                                <p>営業時間: 9:00～18:00</p>
+                                <p>定休日: 日曜日</p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>サービス</h4>
+                                <p><a href="services.html">キッチンリフォーム</a></p>
+                                <p><a href="services.html">浴室リフォーム</a></p>
+                                <p><a href="services.html">外壁塗装</a></p>
+                                <p><a href="services.html">屋根工事</a></p>
+                                <p><a href="services.html">全面改修</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>お問い合わせ</h4>
+                                <p>📞 045-123-4567</p>
+                                <p>📧 info@yamada-kenchiku.jp</p>
+                                <p><a href="contact.html">お問い合わせフォーム</a></p>
+                            </div>
+                            <div className="footer-section">
+                                <h4>営業エリア</h4>
+                                <p>横浜市内全域</p>
+                                <p>川崎市の一部</p>
+                                <p>※出張費無料エリア</p>
+                                <p><a href="about.html">詳しくはこちら</a></p>
+                            </div>
+                        </div>
+                        <div className="footer-bottom">
+                            <p>&copy; 2024 山田建築. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
