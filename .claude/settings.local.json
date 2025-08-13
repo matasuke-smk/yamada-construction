@@ -9,7 +9,9 @@
       "Bash(gh repo view:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:matasuke-smk.github.io)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

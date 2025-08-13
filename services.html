@@ -311,6 +311,32 @@
             margin-bottom: 1rem;
         }
 
+        .price-details {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .price-details li {
+            padding: 0.5rem 0;
+            color: var(--text-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-details .price-item {
+            font-weight: 500;
+        }
+
+        .price-details .price-value {
+            color: var(--primary-navy);
+            font-weight: 600;
+        }
+
         .service-cta {
             margin-top: 2rem;
         }
@@ -790,7 +816,11 @@
                         '収納棚増設',
                         '照明器具交換'
                     ],
-                    price: '80万円～200万円',
+                    price: '80万円〜200万円',
+                    priceDetails: [
+                        { item: 'システムキッチン交換', price: '80万円〜' },
+                        { item: 'オーダーキッチン', price: '150万円〜' }
+                    ],
                     image: 'キッチンリフォーム施工例'
                 },
                 {
@@ -805,7 +835,11 @@
                         '手すり設置',
                         '脱衣所改修'
                     ],
-                    price: '100万円～180万円',
+                    price: '100万円〜180万円',
+                    priceDetails: [
+                        { item: 'ユニットバス交換', price: '100万円〜' },
+                        { item: 'システムバス', price: '150万円〜' }
+                    ],
                     image: '浴室リフォーム施工例'
                 },
                 {
@@ -820,7 +854,11 @@
                         '照明器具交換',
                         'タオル掛け設置'
                     ],
-                    price: '20万円～60万円',
+                    price: '20万円〜60万円',
+                    priceDetails: [
+                        { item: '便器交換のみ', price: '20万円〜' },
+                        { item: '内装込み全体', price: '40万円〜' }
+                    ],
                     image: 'トイレリフォーム施工例'
                 },
                 {
@@ -835,7 +873,11 @@
                         '高圧洗浄',
                         '下地処理'
                     ],
-                    price: '80万円～150万円',
+                    price: '80万円〜150万円',
+                    priceDetails: [
+                        { item: 'シリコン塗料', price: '80万円〜' },
+                        { item: 'フッ素塗料', price: '120万円〜' }
+                    ],
                     image: '外壁塗装施工例'
                 },
                 {
@@ -850,7 +892,11 @@
                         '防水工事',
                         '断熱材設置'
                     ],
-                    price: '60万円～200万円',
+                    price: '60万円〜200万円',
+                    priceDetails: [
+                        { item: '屋根塗装', price: '60万円〜' },
+                        { item: '屋根材交換', price: '150万円〜' }
+                    ],
                     image: '屋根工事施工例'
                 },
                 {
@@ -865,7 +911,11 @@
                         '電気・給排水工事',
                         'フローリング張替え'
                     ],
-                    price: '500万円～1500万円',
+                    price: '500万円〜1500万円',
+                    priceDetails: [
+                        { item: '部分改修', price: '500万円〜' },
+                        { item: 'スケルトン改修', price: '1000万円〜' }
+                    ],
                     image: '全面改修施工例'
                 }
             ];
@@ -888,6 +938,16 @@
                                             {service.title}
                                         </h3>
                                         <div className="price-badge">{service.price}</div>
+                                        {service.priceDetails && (
+                                            <ul className="price-details">
+                                                {service.priceDetails.map((detail, i) => (
+                                                    <li key={i}>
+                                                        <span className="price-item">{detail.item}:</span>
+                                                        <span className="price-value">{detail.price}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                         <p className="service-description body-text">
                                             {service.description}
                                         </p>

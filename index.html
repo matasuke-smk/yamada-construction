@@ -55,6 +55,11 @@
             letter-spacing: 0.02em;
             line-height: 1.2;
             color: var(--primary-navy);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+            padding: 20px;
+            backdrop-filter: blur(2px);
+            border-radius: 8px;
         }
 
         .section-title {
@@ -122,6 +127,13 @@
             padding: 1rem 0;
         }
 
+        .header-contact {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
         .header-phone {
             display: flex;
             align-items: center;
@@ -131,6 +143,12 @@
             font-size: 1.2rem;
             font-weight: 600;
             transition: var(--transition-smooth);
+            margin: 0.25rem 0;
+        }
+
+        .business-hours {
+            color: var(--text-gray);
+            font-size: 0.8rem;
         }
 
         .header-phone:hover {
@@ -254,21 +272,32 @@
             bottom: 2rem;
             right: 2rem;
             z-index: 999;
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             color: white;
             border: none;
             border-radius: 50px;
             padding: 1rem 1.5rem;
             font-size: 1rem;
             font-weight: 600;
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
             cursor: pointer;
             transition: var(--transition-smooth);
-            animation: float 3s ease-in-out infinite;
+            animation: pulse-float 2s ease-in-out infinite;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
+        }
+
+        @keyframes pulse-float {
+            0%, 100% { 
+                transform: translateY(0) scale(1); 
+                box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+            }
+            50% { 
+                transform: translateY(-5px) scale(1.05); 
+                box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+            }
         }
 
         .floating-cta:hover {
@@ -516,6 +545,17 @@
             font-size: 0.95rem;
             color: var(--text-gray);
             line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .process-duration {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            display: inline-block;
         }
         
         @media (max-width: 768px) {
@@ -645,6 +685,22 @@
             margin: 0;
             color: var(--text-gray);
             font-size: 0.9rem;
+        }
+
+        .testimonial-period {
+            color: var(--accent-gold) !important;
+            font-weight: 600 !important;
+        }
+
+        .testimonial-badge {
+            background: linear-gradient(135deg, var(--primary-navy), #2c5282);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 1rem 0;
         }
         
         @media (max-width: 768px) {
@@ -855,7 +911,7 @@
                 gap: 1.5rem;
             }
 
-            .header-phone {
+            .header-contact {
                 display: none;
             }
 
@@ -934,6 +990,42 @@
                 min-height: 44px;
             }
 
+            .mobile-phone-cta {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, var(--primary-navy), #2c5282);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                z-index: 998;
+                display: block;
+                animation: pulse-glow 2s infinite;
+            }
+
+            @keyframes pulse-glow {
+                0%, 100% { 
+                    background: linear-gradient(135deg, var(--primary-navy), #2c5282);
+                }
+                50% { 
+                    background: linear-gradient(135deg, #ff6b35, #f7931e);
+                }
+            }
+
+            .mobile-phone-cta a {
+                color: white;
+                text-decoration: none;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+
+            .mobile-menu-btn {
+                min-width: 60px;
+                min-height: 44px;
+                font-size: 2.5rem;
+            }
+
             .btn {
                 min-height: 44px;
                 padding: 1rem 1.5rem;
@@ -947,6 +1039,233 @@
                 display: flex;
                 align-items: center;
             }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lightbox-prev {
+            left: -60px;
+        }
+
+        .lightbox-next {
+            right: -60px;
+        }
+
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                font-size: 1.5rem;
+                padding: 0.8rem;
+            }
+
+            .lightbox-prev {
+                left: -50px;
+            }
+
+            .lightbox-next {
+                right: -50px;
+            }
+
+            .lightbox-close {
+                top: -40px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Image hover effect */
+        .work-image:hover,
+        .hero-image:hover {
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        /* FAQ Section */
+        .faq {
+            background: var(--bg-cream);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .faq-question {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 2rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .faq-question::before {
+            content: 'Q';
+            background: var(--accent-gold);
+            color: var(--primary-white);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            padding-left: 3rem;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+            padding-bottom: 2rem;
+        }
+
+        .faq-answer-content {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .faq-answer-content::before {
+            content: 'A';
+            background: var(--primary-navy);
+            color: var(--primary-white);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            margin-left: -3rem;
+            float: left;
+            margin-top: 0.2rem;
+        }
+
+        /* Achievements Section */
+        .achievements {
+            background: var(--primary-navy);
+            color: var(--primary-white);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .achievement-item {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .achievement-number {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         /* Animation Classes */
@@ -974,6 +1293,34 @@
 
         function App() {
             const [scrolled, setScrolled] = useState(false);
+            const [lightboxOpen, setLightboxOpen] = useState(false);
+            const [currentImage, setCurrentImage] = useState(0);
+            
+            const images = [
+                'ヒーローイメージ（施工事例の写真）',
+                'キッチンリフォーム施工事例',
+                '浴室リフォーム施工事例',
+                '外壁塗装施工事例'
+            ];
+
+            const openLightbox = (index) => {
+                setCurrentImage(index);
+                setLightboxOpen(true);
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeLightbox = () => {
+                setLightboxOpen(false);
+                document.body.style.overflow = 'auto';
+            };
+
+            const nextImage = () => {
+                setCurrentImage((prev) => (prev + 1) % images.length);
+            };
+
+            const prevImage = () => {
+                setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
+            };
 
             useEffect(() => {
                 const handleScroll = () => {
@@ -1061,6 +1408,20 @@
                             }
                         });
                     });
+
+                    // Achievement items animation
+                    gsap.utils.toArray('.achievement-item').forEach((item, i) => {
+                        gsap.to(item, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 1,
+                            delay: i * 0.3,
+                            scrollTrigger: {
+                                trigger: item,
+                                start: 'top 85%',
+                            }
+                        });
+                    });
                 };
 
                 window.addEventListener('scroll', handleScroll);
@@ -1074,15 +1435,26 @@
             return (
                 <>
                     <Header scrolled={scrolled} />
-                    <HeroSection />
+                    <HeroSection openLightbox={openLightbox} />
                     <FeaturesSection />
                     <NewsSection />
-                    <RecentWorksSection />
+                    <RecentWorksSection openLightbox={openLightbox} />
                     <TestimonialsSection />
                     <ProcessFlowSection />
+                    <FAQSection />
+                    <AchievementsSection />
                     <CTASection />
                     <Footer />
                     <FloatingCTA />
+                    <MobilePhoneCTA />
+                    <Lightbox 
+                        isOpen={lightboxOpen} 
+                        currentImage={currentImage}
+                        images={images}
+                        onClose={closeLightbox}
+                        onNext={nextImage}
+                        onPrev={prevImage}
+                    />
                 </>
             );
         }
@@ -1105,10 +1477,14 @@
                                 <button className="mobile-menu-btn">☰</button>
                             </nav>
                             
-                            <a href="tel:045-123-4567" className="header-phone">
-                                <span className="phone-icon">📞</span>
-                                <span>045-123-4567</span>
-                            </a>
+                            <div className="header-contact">
+                                <div className="small-text">お気軽にお電話ください</div>
+                                <a href="tel:045-123-4567" className="header-phone">
+                                    <span className="phone-icon">📞</span>
+                                    <span>045-123-4567</span>
+                                </a>
+                                <div className="business-hours small-text">営業時間 9:00-18:00（日祝除く）</div>
+                            </div>
                             
                             <a href="contact.html" className="cta-button pulse">
                                 無料相談はこちら
@@ -1119,7 +1495,7 @@
             );
         }
 
-        function HeroSection() {
+        function HeroSection({ openLightbox }) {
             return (
                 <section className="hero">
                     <div className="container">
@@ -1141,8 +1517,9 @@
                                 </div>
                             </div>
                             <div className="hero-visual">
-                                <div className="hero-image">
-                                    メインビジュアル<br />施工事例写真
+                                <div className="hero-image" onClick={() => openLightbox(0)}>
+                                    メインビジュアル<br />施工事例写真<br />
+                                    <small>クリックで拡大</small>
                                 </div>
                             </div>
                         </div>
@@ -1228,7 +1605,7 @@
             );
         }
 
-        function RecentWorksSection() {
+        function RecentWorksSection({ openLightbox }) {
             const works = [
                 {
                     title: 'キッチンリフォーム',
@@ -1260,8 +1637,9 @@
                         <div className="works-grid">
                             {works.map((work, index) => (
                                 <div key={index} className="work-card">
-                                    <div className="work-image">
-                                        施工事例写真<br />{work.title}
+                                    <div className="work-image" onClick={() => openLightbox(index + 1)}>
+                                        施工事例写真<br />{work.title}<br />
+                                        <small>クリックで拡大</small>
                                     </div>
                                     <div className="work-content">
                                         <h3 className="work-title">{work.title}</h3>
@@ -1322,23 +1700,29 @@
                 {
                     rating: 5,
                     content: '15年住んだキッチンを新しくしていただきました。住みながらの工事で心配でしたが、職人さんがとても丁寧で、毎日きれいに掃除してくださり、安心して過ごせました。仕上がりも想像以上で、毎日の料理が楽しくなりました。',
-                    author: '田中様',
-                    location: '横浜市中区',
-                    service: 'キッチンリフォーム'
+                    author: 'T様（60代女性）',
+                    location: '横浜市港北区',
+                    service: '築30年キッチンリフォーム',
+                    period: '工期: 5日間',
+                    completionDate: '2024年10月施工'
                 },
                 {
                     rating: 5,
                     content: '他社では高額な見積もりでしたが、山田建築さんは予算内で理想の浴室を実現してくださいました。工事中も近所への配慮が行き届いており、職人さんの技術力の高さを感じました。温かいお風呂に毎日癒されています。',
-                    author: '佐藤様',
+                    author: 'S様（50代男性）',
                     location: '横浜市西区',
-                    service: '浴室リフォーム'
+                    service: 'ユニットバス交換',
+                    period: '工期: 4日間',
+                    completionDate: '2024年9月施工'
                 },
                 {
                     rating: 5,
                     content: '外壁の劣化が気になっていましたが、山田建築さんに相談して大正解でした。色選びから丁寧にアドバイスいただき、近所の方からも「新築みたい」と言われるほど美しく仕上がりました。アフターフォローもしっかりしています。',
-                    author: '山本様',
+                    author: 'Y様（40代夫婦）',
                     location: '横浜市南区',
-                    service: '外壁塗装'
+                    service: '外壁・屋根塗装',
+                    period: '工期: 10日間',
+                    completionDate: '2024年8月施工'
                 }
             ];
 
@@ -1361,13 +1745,16 @@
                                     <p className="testimonial-content">
                                         {testimonial.content}
                                     </p>
+                                    <div className="testimonial-badge">{testimonial.completionDate}</div>
                                     <div className="testimonial-author">
                                         <div className="testimonial-avatar">
                                             {testimonial.author.charAt(0)}
                                         </div>
                                         <div className="testimonial-info">
                                             <h4>{testimonial.author}</h4>
-                                            <p>{testimonial.location} · {testimonial.service}</p>
+                                            <p>{testimonial.location}</p>
+                                            <p>{testimonial.service}</p>
+                                            <p className="testimonial-period">{testimonial.period}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1381,34 +1768,46 @@
         function ProcessFlowSection() {
             const steps = [
                 {
-                    number: '01',
+                    number: '1',
                     title: 'お問い合わせ',
-                    description: 'お電話またはWebフォームからお気軽にご相談ください。ご要望をお聞かせください。'
+                    description: 'お電話・メールでお気軽に',
+                    duration: '当日対応'
                 },
                 {
-                    number: '02', 
-                    title: '現地調査・お打合せ',
-                    description: '現地にお伺いし、詳細な調査を実施。お客様のご要望を詳しくお聞きします。'
+                    number: '2',
+                    title: '現地調査',
+                    description: '無料で詳しく調査します',
+                    duration: '1-2日後'
                 },
                 {
-                    number: '03',
+                    number: '3',
                     title: 'お見積もり',
-                    description: '調査結果を基に詳細なお見積もりを作成。内容について丁寧にご説明いたします。'
+                    description: '明確な料金をご提示',
+                    duration: '3日以内'
                 },
                 {
-                    number: '04',
+                    number: '4',
                     title: 'ご契約',
-                    description: 'お見積もり内容にご納得いただけましたら、正式にご契約となります。'
+                    description: 'ご納得いただいてから',
+                    duration: ''
                 },
                 {
-                    number: '05',
-                    title: '施工開始',
-                    description: '経験豊富な職人が丁寧に施工いたします。住みながらの工事も安心です。'
+                    number: '5',
+                    title: '着工',
+                    description: '丁寧に施工します',
+                    duration: ''
                 },
                 {
-                    number: '06',
-                    title: '完成・お引渡し',
-                    description: '工事完了後、お客様と一緒に最終確認を行い、お引渡しとなります。'
+                    number: '6',
+                    title: '完成・お引き渡し',
+                    description: '確認後お引き渡し',
+                    duration: ''
+                },
+                {
+                    number: '7',
+                    title: 'アフターフォロー',
+                    description: '1年間無料保証',
+                    duration: ''
                 }
             ];
 
@@ -1426,6 +1825,9 @@
                                     <div className="process-number">{step.number}</div>
                                     <h3 className="process-title">{step.title}</h3>
                                     <p className="process-description">{step.description}</p>
+                                    {step.duration && (
+                                        <span className="process-duration">{step.duration}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -1477,12 +1879,155 @@
             );
         }
 
+        function FAQSection() {
+            const [activeIndex, setActiveIndex] = useState(null);
+
+            const faqs = [
+                {
+                    question: '見積もりは本当に無料ですか？',
+                    answer: 'はい、お見積もりは完全無料です。しつこい営業も一切いたしません。'
+                },
+                {
+                    question: '工事中は家にいても大丈夫ですか？',
+                    answer: 'もちろんです。生活に支障がないよう配慮して工事を進めます。'
+                },
+                {
+                    question: '保証はありますか？',
+                    answer: 'はい、工事内容に応じて1〜10年の保証をお付けしています。'
+                }
+            ];
+
+            const toggleFAQ = (index) => {
+                setActiveIndex(activeIndex === index ? null : index);
+            };
+
+            return (
+                <section className="faq section">
+                    <div className="container">
+                        <h2 className="section-title">よくある質問</h2>
+                        <div className="faq-list">
+                            {faqs.map((faq, index) => (
+                                <div key={index} className="faq-item">
+                                    <button 
+                                        className={`faq-question ${activeIndex === index ? 'active' : ''}`}
+                                        onClick={() => toggleFAQ(index)}
+                                    >
+                                        {faq.question}
+                                    </button>
+                                    <div className={`faq-answer ${activeIndex === index ? 'active' : ''}`}>
+                                        <div className="faq-answer-content">
+                                            {faq.answer}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function AchievementsSection() {
+            const achievements = [
+                {
+                    number: '1,200件',
+                    label: '累計施工実績'
+                },
+                {
+                    number: '98%',
+                    label: 'お客様満足度'
+                },
+                {
+                    number: '15年',
+                    label: '地域密着営業'
+                }
+            ];
+
+            return (
+                <section className="achievements section">
+                    <div className="container">
+                        <h2 className="section-title">実績・信頼の数字</h2>
+                        <div className="achievements-grid">
+                            {achievements.map((achievement, index) => (
+                                <div key={index} className="achievement-item">
+                                    <div className="achievement-number">{achievement.number}</div>
+                                    <div className="achievement-label">{achievement.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
         function FloatingCTA() {
             return (
                 <a href="contact.html" className="floating-cta">
-                    <span className="floating-icon">💬</span>
-                    <span>無料相談</span>
+                    <span className="floating-icon">📝</span>
+                    <span>無料見積もりはこちら</span>
                 </a>
+            );
+        }
+
+        function MobilePhoneCTA() {
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const checkMobile = () => {
+                    setIsVisible(window.innerWidth <= 768);
+                };
+                
+                checkMobile();
+                window.addEventListener('resize', checkMobile);
+                return () => window.removeEventListener('resize', checkMobile);
+            }, []);
+
+            if (!isVisible) return null;
+
+            return (
+                <div className="mobile-phone-cta">
+                    <a href="tel:045-123-4567">
+                        📞 今すぐお電話 045-123-4567
+                    </a>
+                </div>
+            );
+        }
+
+        function Lightbox({ isOpen, currentImage, images, onClose, onNext, onPrev }) {
+            useEffect(() => {
+                const handleKeyPress = (e) => {
+                    if (!isOpen) return;
+                    
+                    switch (e.key) {
+                        case 'Escape':
+                            onClose();
+                            break;
+                        case 'ArrowRight':
+                            onNext();
+                            break;
+                        case 'ArrowLeft':
+                            onPrev();
+                            break;
+                    }
+                };
+
+                document.addEventListener('keydown', handleKeyPress);
+                return () => document.removeEventListener('keydown', handleKeyPress);
+            }, [isOpen, onClose, onNext, onPrev]);
+
+            if (!isOpen) return null;
+
+            return (
+                <div className={`lightbox ${isOpen ? 'active' : ''}`} onClick={onClose}>
+                    <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="lightbox-close" onClick={onClose}>×</button>
+                        <button className="lightbox-nav lightbox-prev" onClick={onPrev}>‹</button>
+                        <div className="lightbox-image">
+                            {images[currentImage]}
+                        </div>
+                        <button className="lightbox-nav lightbox-next" onClick={onNext}>›</button>
+                    </div>
+                </div>
             );
         }
 
